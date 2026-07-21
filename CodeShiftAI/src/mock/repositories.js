@@ -1,0 +1,66 @@
+export const repositories = [
+  {
+    id: 'repo-1',
+    name: 'python-legacy-app',
+    fullName: 'codeshift-eng/python-legacy-app',
+    provider: 'github',
+    defaultBranch: 'main',
+    description: 'Legacy Python 2.7 e-commerce backend needing migration to Python 3.12',
+    language: 'Python',
+    sourceVersion: '2.7',
+    lastMigration: '2026-07-20T14:30:00Z',
+    status: 'connected',
+  },
+  {
+    id: 'repo-2',
+    name: 'js-monolith',
+    fullName: 'codeshift-eng/js-monolith',
+    provider: 'github',
+    defaultBranch: 'master',
+    description: 'Large JavaScript ES5 frontend monolith targeted for TypeScript migration',
+    language: 'JavaScript',
+    sourceVersion: 'ES5',
+    lastMigration: null,
+    status: 'connected',
+  },
+  {
+    id: 'repo-3',
+    name: 'cobol-batch',
+    fullName: 'codeshift-eng/cobol-batch',
+    provider: 'gitlab',
+    defaultBranch: 'main',
+    description: 'Legacy COBOL batch-processing module for financial transactions',
+    language: 'COBOL',
+    sourceVersion: 'COBOL-85',
+    lastMigration: '2026-07-18T09:15:00Z',
+    status: 'connected',
+  },
+  {
+    id: 'repo-4',
+    name: 'java-ecommerce',
+    fullName: 'codeshift-eng/java-ecommerce',
+    provider: 'bitbucket',
+    defaultBranch: 'develop',
+    description: 'Java 8 e-commerce platform to be upgraded to Java 21 with modern APIs',
+    language: 'Java',
+    sourceVersion: '8',
+    lastMigration: null,
+    status: 'connected',
+  },
+]
+
+export const migrationPairs = [
+  { id: 'py27-py312', source: 'Python 2.7', target: 'Python 3.12' },
+  { id: 'py38-py312', source: 'Python 3.8', target: 'Python 3.12' },
+  { id: 'es5-ts5', source: 'JavaScript ES5', target: 'TypeScript 5.x' },
+  { id: 'es6-ts5', source: 'JavaScript ES6+', target: 'TypeScript 5.x' },
+  { id: 'cobol-java21', source: 'COBOL-85', target: 'Java 21' },
+  { id: 'java8-java21', source: 'Java 8', target: 'Java 21' },
+  { id: 'java11-java21', source: 'Java 11', target: 'Java 21' },
+]
+
+export const providers = [
+  { id: 'github', name: 'GitHub', icon: 'github' },
+  { id: 'gitlab', name: 'GitLab', icon: 'gitlab' },
+  { id: 'bitbucket', name: 'Bitbucket', icon: 'bitbucket' },
+]
