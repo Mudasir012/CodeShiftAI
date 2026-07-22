@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Terminal, ChevronDown, Menu, X } from 'lucide-react'
+import { Terminal, ChevronDown, Menu, X, Shield } from 'lucide-react'
 
 export default function TopNavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -9,6 +9,7 @@ export default function TopNavBar() {
   const navLinks = [
     { to: '/dashboard', label: 'Dashboard' },
     { to: '/history', label: 'History' },
+    { to: '/audit-log', label: 'Audit Log', icon: Shield },
     { to: '/settings', label: 'Settings' },
   ]
 
@@ -25,19 +26,23 @@ export default function TopNavBar() {
         </div>
 
         <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map(link => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                location.pathname.startsWith(link.to)
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map(link => {
+            const Icon = link.icon
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors inline-flex items-center gap-1.5 ${
+                  location.pathname.startsWith(link.to)
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                {Icon && <Icon className="w-3.5 h-3.5" />}
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -64,15 +69,23 @@ export default function TopNavBar() {
               key={link.to}
               to={link.to}
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2 text-sm font-medium rounded-md mb-1 ${
+              className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md mb-1 ${
                 location.pathname.startsWith(link.to)
                   ? 'bg-gray-100 text-gray-900'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
               }`}
             >
+              {link.icon && <link.icon className="w-3.5 h-3.5" />}
               {link.label}
             </Link>
           ))}
+          <Link
+            to="/login"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 mt-2 text-sm font-medium text-blue-600 border-t border-gray-100 pt-3"
+          >
+            Sign out
+          </Link>
         </div>
       )}
     </header>

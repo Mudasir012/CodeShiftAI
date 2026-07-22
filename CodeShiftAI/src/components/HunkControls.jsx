@@ -1,15 +1,23 @@
 import { useState } from 'react'
 import { Check, X, Edit3, MessageSquare, Save } from 'lucide-react'
 
-export default function HunkControls({ hunkId, decision, onDecision, original, migrated }) {
+export default function HunkControls({ hunkId, decision, onDecision, onComment, comment: externalComment, original, migrated }) {
   const [editing, setEditing] = useState(false)
   const [editedCode, setEditedCode] = useState(migrated)
-  const [comment, setComment] = useState('')
+  const [localComment, setLocalComment] = useState(externalComment || '')
   const [showComment, setShowComment] = useState(false)
+
+  const hasComment = externalComment && externalComment.trim()
 
   function handleSaveEdit() {
     onDecision(hunkId, 'edited')
     setEditing(false)
+  }
+
+  function handleSendComment() {
+    if (onComment && localComment.trim()) {
+      onComment(hunkId, localComment.trim())
+    }
   }
 
   const buttonBase = 'flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors'
@@ -36,7 +44,7 @@ export default function HunkControls({ hunkId, decision, onDecision, original, m
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => onDecision(hunkId, 'accepted')}
           className={`${buttonBase} ${
@@ -65,10 +73,14 @@ export default function HunkControls({ hunkId, decision, onDecision, original, m
         </button>
         <button
           onClick={() => setShowComment(!showComment)}
-          className={`${buttonBase} border-gray-200 text-gray-600 hover:bg-blue-50 hover:border-blue-300`}
+          className={`${buttonBase} transition-colors ${
+            hasComment
+              ? 'bg-blue-50 border-blue-300 text-blue-700'
+              : 'border-gray-200 text-gray-600 hover:bg-blue-50 hover:border-blue-300'
+          }`}
         >
           <MessageSquare className="w-3.5 h-3.5" />
-          {showComment ? 'Hide' : 'Comment'}
+          {hasComment ? `${comment ? 'Comment' : 'Edit'}` : 'Comment'}
         </button>
       </div>
 
@@ -76,21 +88,31 @@ export default function HunkControls({ hunkId, decision, onDecision, original, m
         <div className="flex items-start gap-2">
           <input
             type="text"
-            placeholder="Add a review comment..."
-            value={comment}
-            onChange={e => setComment(e.target.value)}
+            placeholder={hasComment ? externalComment || 'Add a review comment...' : 'Add a review comment...'}
+            value={localComment}
+            onChange={e => setLocalComment(e.target.value)}
             className="flex-1 px-3 py-1.5 text-xs border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
-          {comment && (
-            <button className="px-3 py-1.5 text-xs font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700">
+          {localComment.trim() && (
+            <button
+              onClick={handleSendComment}
+              className="px-3 py-1.5 text-xs font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+            >
               Send
             </button>
           )}
         </div>
       )}
 
+      {hasComment && !showComment && (
+        <div className="flex items-start gap-1.5 px-2 py-1.5 bg-blue-50 border border-blue-100 rounded-lg text-xs">
+          <MessageSquare className="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />
+          <span className="text-blue-700">{externalComment}</span>
+        </div>
+      )}
+
       {decision && decision !== 'pending' && (
-        <div className={`text-xs ${
+        <div className={`text-xs font-medium ${
           decision === 'accepted' ? 'text-emerald-600' :
           decision === 'rejected' ? 'text-red-600' : 'text-amber-600'
         }`}>

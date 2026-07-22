@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, Loader2, TestTube, Eye, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, Loader2, TestTube, Eye, AlertTriangle, RefreshCw, Download } from 'lucide-react'
 import { useApp } from '../context/AppContext.jsx'
-import { getJob } from '../mock/migrations.js'
+import { getJob, createJob } from '../mock/migrations.js'
 import ProgressStepper from '../components/ProgressStepper.jsx'
 import LogConsole from '../components/LogConsole.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
@@ -17,6 +17,7 @@ export default function MigrationProgressPage() {
   const [stage, setStage] = useState(0)
   const [status, setStatus] = useState('loading')
   const [diffData, setDiffData] = useState(null)
+  const [retrying, setRetrying] = useState(false)
 
   const job = state.currentJob || state.jobs.find(j => j.id === id)
 
@@ -55,6 +56,49 @@ export default function MigrationProgressPage() {
         break
     }
   }, [id, dispatch])
+
+  async function handleRetry() {
+    if (!job) return
+    setRetrying(true)
+    const newJob = await createJob({
+      repoId: job.repoId,
+      repoName: job.repoName,
+      branch: job.branch || 'main',
+      sourceVersion: job.sourceVersion,
+      targetVersion: job.targetVersion,
+    })
+    setRetrying(false)
+    navigate(`/migrations/${newJob.id}`)
+  }
+
+  function handleDownloadPatch() {
+    const content = `From: CodeShift AI <migration@codeshift.dev>
+Date: ${new Date().toLocaleDateString()}
+Subject: [PATCH] Migrated ${job?.sourceVersion} → ${job?.targetVersion}
+
+---
+diff --git a/src/main.py b/src/main.py
+index abc123..def456 100644
+--- a/src/main.py
++++ b/src/main.py
+@@ -1,5 +1,7 @@
+-def calculate_total(items):
+-    total = 0
+-    for item in items:
+-        total += item['price'] * item['quantity']
+-    return total
++def calculate_total(items: list[dict]) -> float:
++    return sum(item['price'] * item['quantity'] for item in items)
+`;
+
+    const blob = new Blob([content], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${job?.repoName || 'migration'}-${job?.sourceVersion || ''}-to-${job?.targetVersion || ''}.patch`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
   if (status === 'loading') {
     return (
@@ -97,14 +141,35 @@ export default function MigrationProgressPage() {
             <h1 className="text-lg font-bold text-gray-900 truncate">{job?.repoName}</h1>
             <p className="text-sm text-gray-500 mt-0.5">{job?.sourceVersion} &rarr; {job?.targetVersion}</p>
           </div>
-          <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 whitespace-nowrap ${
-            isActive ? 'bg-blue-50 text-blue-700' :
-            isComplete ? 'bg-emerald-50 text-emerald-700' :
-            'bg-red-50 text-red-700'
-          }`}>
-            {isActive && <Loader2 className="w-3 h-3 animate-spin" />}
-            {job?.status?.replace('-', ' ')}
-          </span>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {isComplete && (
+              <button
+                onClick={handleDownloadPatch}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download Patch
+              </button>
+            )}
+            {isFailed && (
+              <button
+                onClick={handleRetry}
+                disabled={retrying}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-violet-700 bg-violet-50 border border-violet-200 rounded-lg hover:bg-violet-100 transition-colors"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${retrying ? 'animate-spin' : ''}`} />
+                {retrying ? 'Retrying...' : 'Retry Migration'}
+              </button>
+            )}
+            <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 ${
+              isActive ? 'bg-blue-50 text-blue-700' :
+              isComplete ? 'bg-emerald-50 text-emerald-700' :
+              'bg-red-50 text-red-700'
+            }`}>
+              {isActive && <Loader2 className="w-3 h-3 animate-spin" />}
+              {job?.status?.replace('-', ' ')}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -206,6 +271,14 @@ export default function MigrationProgressPage() {
                   <p className="text-xs text-red-600 mt-1">
                     {status === 'failed' ? 'The migration encountered an error during processing.' : 'The validation test suite timed out.'}
                   </p>
+                  <button
+                    onClick={handleRetry}
+                    disabled={retrying}
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-red-700 hover:text-red-800 transition-colors"
+                  >
+                    <RefreshCw className={`w-3 h-3 ${retrying ? 'animate-spin' : ''}`} />
+                    {retrying ? 'Retrying...' : 'Retry this migration'}
+                  </button>
                 </div>
               </div>
             </div>

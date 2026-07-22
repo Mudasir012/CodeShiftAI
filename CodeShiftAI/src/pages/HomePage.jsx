@@ -104,6 +104,12 @@ export default function HomePage() {
               <a href="#how-it-works" className="text-sm text-white border-2 border-transparent hover:border-white px-3 py-1.5">How It Works</a>
               <a href="#migrations" className="text-sm text-white border-2 border-transparent hover:border-white px-3 py-1.5">Migrations</a>
               <Link
+                to="/login"
+                className="px-4 py-1.5 border-2 border-white text-white text-sm font-bold hover:bg-white hover:text-black"
+              >
+                SIGN IN
+              </Link>
+              <Link
                 to="/dashboard"
                 className="px-4 py-1.5 bg-lime-300 text-black text-sm font-bold border-2 border-lime-300 hover:bg-lime-400"
               >

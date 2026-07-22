@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, AlertCircle, XCircle, FileCode } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, AlertCircle, XCircle, FileCode, Download, MessageSquare } from 'lucide-react'
 import { diffFiles } from '../mock/diff-data.js'
 import { submitReview } from '../mock/migrations.js'
 import FileTreePanel from '../components/FileTreePanel.jsx'
@@ -8,18 +8,13 @@ import DiffViewer from '../components/DiffViewer.jsx'
 import HunkControls from '../components/HunkControls.jsx'
 import FinalizeBar from '../components/FinalizeBar.jsx'
 
-const statusIcons = {
-  'validated': { icon: CheckCircle2, color: 'text-emerald-500' },
-  'needs-review': { icon: AlertCircle, color: 'text-amber-500' },
-  'test-failure': { icon: XCircle, color: 'text-red-500' },
-}
-
 export default function DiffReviewPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [files] = useState(diffFiles)
   const [selectedFile, setSelectedFile] = useState(diffFiles[0])
   const [decisions, setDecisions] = useState({})
+  const [comments, setComments] = useState({})
   const [finalizing, setFinalizing] = useState(false)
   const [exported, setExported] = useState(false)
 
@@ -33,6 +28,10 @@ export default function DiffReviewPage() {
 
   function handleDecision(hunkId, decision) {
     setDecisions(prev => ({ ...prev, [hunkId]: decision }))
+  }
+
+  function handleComment(hunkId, text) {
+    setComments(prev => ({ ...prev, [hunkId]: text }))
   }
 
   function getFileStatus(file) {
@@ -49,6 +48,7 @@ export default function DiffReviewPage() {
 
   const totalHunks = files.reduce((sum, f) => sum + f.hunks.length, 0)
   const reviewedHunks = Object.values(decisions).filter(d => d !== 'pending').length
+  const commentCount = Object.values(comments).filter(c => c && c.trim()).length
   const allReviewed = reviewedHunks === totalHunks
   const anyAccepted = Object.values(decisions).some(d => d === 'accepted')
 
@@ -58,6 +58,29 @@ export default function DiffReviewPage() {
     await submitReview(id, decisions)
     setFinalizing(false)
     setExported(true)
+  }
+
+  function handleDownloadPatch() {
+    const patches = files.map(f => {
+      return `diff --git a/${f.path} b/${f.path}
+${f.hunks.map(h => h.header).join('\n')}`
+    }).join('\n\n')
+
+    const content = `From: CodeShift AI <migration@codeshift.dev>
+Date: ${new Date().toLocaleDateString()}
+Subject: [PATCH] CodeShift AI migration
+
+---
+${patches}
+`
+
+    const blob = new Blob([content], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `codeshift-migration-${id}.patch`
+    a.click()
+    URL.revokeObjectURL(url)
   }
 
   if (exported) {
@@ -73,12 +96,21 @@ export default function DiffReviewPage() {
             <code className="px-1.5 py-0.5 bg-gray-100 rounded text-xs font-mono">codeshift-migrated</code>
             {' '}on the original repository.
           </p>
-          <button
-            onClick={() => navigate('/')}
-            className="mt-6 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors"
-          >
-            Return to Dashboard
-          </button>
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <button
+              onClick={handleDownloadPatch}
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download Patch
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors"
+            >
+              Return to Dashboard
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -99,14 +131,22 @@ export default function DiffReviewPage() {
               <h1 className="text-lg font-bold text-gray-900 truncate">Review Migration Changes</h1>
               <p className="text-xs text-gray-500">
                 {reviewedHunks} of {totalHunks} hunks reviewed
+                {commentCount > 0 && <> &middot; {commentCount} comment{commentCount > 1 ? 's' : ''}</>}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <span className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
+            <button
+              onClick={handleDownloadPatch}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Patch
+            </button>
+            <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
               allReviewed ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
             }`}>
-              {allReviewed ? 'All hunks reviewed' : `${totalHunks - reviewedHunks} hunks remaining`}
+              {allReviewed ? 'All hunks reviewed' : `${totalHunks - reviewedHunks} remaining`}
             </span>
           </div>
         </div>
@@ -168,6 +208,8 @@ export default function DiffReviewPage() {
                           hunkId={hunk.id}
                           decision={decisions[hunk.id]}
                           onDecision={handleDecision}
+                          onComment={handleComment}
+                          comment={comments[hunk.id]}
                           original={hunk.original}
                           migrated={hunk.migrated}
                         />
