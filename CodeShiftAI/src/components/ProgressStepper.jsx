@@ -24,12 +24,12 @@ export default function ProgressStepper({ currentStage, status }) {
             <div className="flex flex-col items-center">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                 isPast || (isLast && isComplete)
-                  ? 'bg-emerald-100 text-emerald-600'
+                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                   : isCurrent && !isFailed
-                  ? 'bg-violet-100 text-violet-600'
+                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
                   : isFailed && isCurrent
-                  ? 'bg-red-100 text-red-600'
-                  : 'bg-gray-100 text-gray-400'
+                  ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                  : 'bg-white/5 text-gray-500 border border-white/10'
               }`}>
                 {isPast || (isLast && isComplete) ? (
                   <CheckCircle2 className="w-5 h-5" />
@@ -42,16 +42,16 @@ export default function ProgressStepper({ currentStage, status }) {
                 )}
               </div>
               <span className={`text-xs mt-1.5 whitespace-nowrap ${
-                isPast || (isLast && isComplete) ? 'text-emerald-600 font-medium'
-                : isCurrent ? 'text-violet-600 font-medium'
-                : 'text-gray-400'
+                isPast || (isLast && isComplete) ? 'text-emerald-400 font-medium'
+                : isCurrent ? 'text-purple-400 font-medium'
+                : 'text-gray-500'
               }`}>
                 {stage.label}
               </span>
             </div>
             {!isLast && (
-              <div className={`flex-1 h-0.5 mx-2 ${
-                index < currentStage ? 'bg-emerald-400' : isCurrent && !isFailed ? 'bg-violet-300' : 'bg-gray-200'
+              <div className={`flex-1 h-0.5 mx-2 rounded-full ${
+                index < currentStage ? 'bg-emerald-500/50' : isCurrent && !isFailed ? 'bg-purple-500/30' : 'bg-white/10'
               }`} />
             )}
           </div>

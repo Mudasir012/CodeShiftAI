@@ -8,12 +8,6 @@ import DiffViewer from '../components/DiffViewer.jsx'
 import HunkControls from '../components/HunkControls.jsx'
 import FinalizeBar from '../components/FinalizeBar.jsx'
 
-const statusIcons = {
-  'validated': { icon: CheckCircle2, color: 'text-emerald-500' },
-  'needs-review': { icon: AlertCircle, color: 'text-amber-500' },
-  'test-failure': { icon: XCircle, color: 'text-red-500' },
-}
-
 export default function DiffReviewPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -41,10 +35,10 @@ export default function DiffReviewPage() {
     const allRejected = fileDecisions.every(d => d === 'rejected')
     const anyPending = fileDecisions.some(d => d === 'pending' || !d)
 
-    if (allAccepted) return { label: 'Accepted', icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-50' }
-    if (allRejected) return { label: 'Rejected', icon: XCircle, color: 'text-red-500', bg: 'bg-red-50' }
-    if (anyPending) return { label: 'Pending Review', icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-50' }
-    return { label: 'Partial', icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-50' }
+    if (allAccepted) return { label: 'Accepted', icon: CheckCircle2, color: 'text-emerald-400' }
+    if (allRejected) return { label: 'Rejected', icon: XCircle, color: 'text-red-400' }
+    if (anyPending) return { label: 'Pending Review', icon: AlertCircle, color: 'text-amber-400' }
+    return { label: 'Partial', icon: AlertCircle, color: 'text-amber-400' }
   }
 
   const totalHunks = files.reduce((sum, f) => sum + f.hunks.length, 0)
@@ -64,18 +58,18 @@ export default function DiffReviewPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+          <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 className="w-8 h-8 text-emerald-400" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900">Migration Exported</h2>
-          <p className="text-sm text-gray-500 mt-2 max-w-md">
+          <h2 className="text-xl font-bold text-white">Migration Exported</h2>
+          <p className="text-sm text-gray-400 mt-2 max-w-md">
             All accepted changes have been pushed to the branch{' '}
-            <code className="px-1.5 py-0.5 bg-gray-100 rounded text-xs font-mono">codeshift-migrated</code>
+            <code className="px-1.5 py-0.5 glass rounded text-xs font-mono text-purple-300">codeshift-migrated</code>
             {' '}on the original repository.
           </p>
           <button
             onClick={() => navigate('/')}
-            className="mt-6 px-4 py-2 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700"
+            className="mt-6 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium hover:from-purple-500 hover:to-pink-500 transition-all shadow-lg shadow-purple-500/25"
           >
             Return to Dashboard
           </button>
@@ -88,11 +82,11 @@ export default function DiffReviewPage() {
     <div className="flex flex-col h-[calc(100vh-3.5rem)]">
       <div className="flex items-center justify-between mb-4 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate(`/migrations/${id}`)} className="p-1.5 hover:bg-gray-100 rounded-lg">
-            <ArrowLeft className="w-5 h-5 text-gray-500" />
+          <button onClick={() => navigate(`/migrations/${id}`)} className="p-1.5 glass rounded-lg hover:bg-white/10 transition-all">
+            <ArrowLeft className="w-5 h-5 text-gray-400" />
           </button>
           <div>
-            <h1 className="text-lg font-bold text-gray-900">Review Migration Changes</h1>
+            <h1 className="text-lg font-semibold text-white">Review Migration Changes</h1>
             <p className="text-xs text-gray-500">
               {reviewedHunks} of {totalHunks} hunks reviewed
             </p>
@@ -100,7 +94,7 @@ export default function DiffReviewPage() {
         </div>
         <div className="flex items-center gap-2">
           <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-            allReviewed ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+            allReviewed ? 'glass text-emerald-400 border border-emerald-500/20' : 'glass text-amber-400 border border-amber-500/20'
           }`}>
             {allReviewed ? 'All hunks reviewed' : `${totalHunks - reviewedHunks} hunks remaining`}
           </span>
@@ -120,14 +114,14 @@ export default function DiffReviewPage() {
         <div className="flex-1 flex flex-col min-w-0">
           {selectedFile && (
             <>
-              <div className="bg-white rounded-t-xl border border-gray-200 px-4 py-2 flex items-center justify-between flex-shrink-0">
+              <div className="glass-card rounded-t-2xl px-4 py-2.5 flex items-center justify-between flex-shrink-0 border-b-0">
                 <div className="flex items-center gap-2 text-sm">
-                  <FileCode className="w-4 h-4 text-gray-400" />
-                  <span className="font-mono text-gray-700">{selectedFile.path}</span>
-                  <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
-                    selectedFile.status === 'validated' ? 'bg-emerald-50 text-emerald-700' :
-                    selectedFile.status === 'test-failure' ? 'bg-red-50 text-red-700' :
-                    'bg-amber-50 text-amber-700'
+                  <FileCode className="w-4 h-4 text-gray-500" />
+                  <span className="font-mono text-gray-300">{selectedFile.path}</span>
+                  <span className={`px-1.5 py-0.5 rounded-lg text-xs font-medium ${
+                    selectedFile.status === 'validated' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                    selectedFile.status === 'test-failure' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+                    'bg-amber-500/10 text-amber-400 border border-amber-500/20'
                   }`}>
                     {selectedFile.status === 'validated' ? 'Validated' :
                      selectedFile.status === 'test-failure' ? 'Test Failure' :
@@ -139,7 +133,7 @@ export default function DiffReviewPage() {
                     onClick={() => {
                       selectedFile.hunks.forEach(h => handleDecision(h.id, 'accepted'))
                     }}
-                    className="px-2 py-1 text-xs text-emerald-600 hover:bg-emerald-50 rounded"
+                    className="px-2 py-1 text-xs text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-colors"
                   >
                     Accept All
                   </button>
@@ -147,17 +141,17 @@ export default function DiffReviewPage() {
                     onClick={() => {
                       selectedFile.hunks.forEach(h => handleDecision(h.id, 'rejected'))
                     }}
-                    className="px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded"
+                    className="px-2 py-1 text-xs text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                   >
                     Reject All
                   </button>
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto border-x border-gray-200 bg-white">
+              <div className="flex-1 overflow-y-auto glass-card rounded-b-2xl rounded-t-none">
                 {selectedFile.hunks.map((hunk) => (
-                  <div key={hunk.id} className="border-b border-gray-100">
-                    <div className="px-4 py-1.5 bg-gray-50 text-xs font-mono text-gray-500 border-y border-gray-100">
+                  <div key={hunk.id} className="border-b border-white/5 last:border-b-0">
+                    <div className="px-4 py-1.5 bg-white/5 text-xs font-mono text-gray-500 border-b border-white/5">
                       {hunk.header}
                     </div>
                     <DiffViewer original={hunk.original} migrated={hunk.migrated} />

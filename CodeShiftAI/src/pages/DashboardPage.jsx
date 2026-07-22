@@ -20,6 +20,8 @@ function formatDate(dateStr) {
   return d.toLocaleDateString()
 }
 
+const statIcons = [HardDrive, GitFork, Activity, Activity]
+
 export default function DashboardPage() {
   const { state, dispatch } = useApp()
   const navigate = useNavigate()
@@ -36,61 +38,60 @@ export default function DashboardPage() {
     return r.lastMigration && (!latest || r.lastMigration > latest) ? r.lastMigration : latest
   }, null)
 
+  const stats = [
+    { label: 'Repositories', value: connectedCount },
+    { label: 'Providers', value: providerCount },
+    { label: 'Migrated', value: migratedCount },
+    { label: 'Last Activity', value: lastActive ? formatDate(lastActive) : 'N/A' },
+  ]
+
   return (
     <div>
-      <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-black">
-        <div className="flex items-center gap-4">
-          <div className="inline-block border-2 border-fuchsia-400 bg-fuchsia-400 text-black px-3 py-1 text-xs font-bold -rotate-1">
-            DASHBOARD
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 mb-3">
+            <span className="text-xs font-medium text-purple-400">Dashboard</span>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-black uppercase tracking-tight">Repositories</h1>
-            <p className="text-sm text-gray-500 mt-1 uppercase tracking-wide">Connect a repository to start a code migration</p>
-          </div>
+          <h1 className="text-2xl font-semibold tracking-tight">Repositories</h1>
+          <p className="text-sm text-gray-400 mt-1">Connect a repository to start a code migration</p>
         </div>
         <button
           onClick={() => navigate('/connect')}
-          className="flex items-center gap-2 px-4 py-2 bg-lime-400 text-black font-bold border-2 border-black hover:bg-lime-500 text-sm uppercase group"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-medium hover:from-purple-500 hover:to-pink-500 transition-all duration-300 shadow-lg shadow-purple-500/25"
         >
-          <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+          <Plus className="w-4 h-4" />
           Connect Repository
         </button>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        {[
-          { icon: HardDrive, label: 'Repositories', value: connectedCount },
-          { icon: GitFork, label: 'Providers', value: providerCount },
-          { icon: Activity, label: 'Migrated', value: migratedCount },
-          { icon: Activity, label: 'Last Activity', value: lastActive ? formatDate(lastActive) : 'N/A' },
-        ].map((stat, i) => {
-          const rotations = ['', '-rotate-1', 'rotate-1', '']
-          const Icon = stat.icon
+        {stats.map((stat, i) => {
+          const Icon = statIcons[i]
           return (
-            <div key={stat.label} className={`border-2 border-black p-4 bg-white ${rotations[i]}`}>
-              <div className="flex items-center gap-2 mb-1">
-                <Icon className="w-4 h-4" />
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{stat.label}</span>
+            <div key={stat.label} className="glass-card rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/10 flex items-center justify-center">
+                  <Icon className="w-3.5 h-3.5 text-purple-400" />
+                </div>
+                <span className="text-xs font-medium text-gray-500">{stat.label}</span>
               </div>
-              <div className="text-2xl font-bold text-black">{stat.value}</div>
+              <div className="text-2xl font-bold text-white">{stat.value}</div>
             </div>
           )
         })}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {repos.map((repo, i) => {
+        {repos.map((repo) => {
           const ProviderIcon = providerIcons[repo.provider] || Code2
-          const rotations = ['', '-rotate-1', 'rotate-1', '', '-rotate-1', 'rotate-1']
           return (
-            <div key={repo.id} className={rotations[i]}>
-              <RepositoryCard
-                repo={repo}
-                ProviderIcon={ProviderIcon}
-                formatDate={formatDate}
-                onMigrate={() => navigate(`/connect?repo=${repo.id}`)}
-              />
-            </div>
+            <RepositoryCard
+              key={repo.id}
+              repo={repo}
+              ProviderIcon={ProviderIcon}
+              formatDate={formatDate}
+              onMigrate={() => navigate(`/connect?repo=${repo.id}`)}
+            />
           )
         })}
       </div>
