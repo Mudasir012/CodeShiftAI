@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Clock, CheckCircle2, Loader2, AlertCircle, XCircle } from 'lucide-react'
+import { Search, Clock, CheckCircle2, Loader2, AlertCircle, XCircle, ArrowRight, CalendarDays } from 'lucide-react'
 import { getJobs } from '../mock/migrations.js'
 import FilterBar from '../components/FilterBar.jsx'
 import JobTable from '../components/JobTable.jsx'
 import JobDetailDrawer from '../components/JobDetailDrawer.jsx'
 
 const statusConfig = {
-  'queued': { icon: Clock, color: 'text-gray-400', label: 'Queued' },
-  'running': { icon: Loader2, color: 'text-blue-400', label: 'Running' },
-  'awaiting-review': { icon: AlertCircle, color: 'text-amber-400', label: 'Awaiting Review' },
-  'completed': { icon: CheckCircle2, color: 'text-emerald-400', label: 'Completed' },
-  'failed': { icon: XCircle, color: 'text-red-400', label: 'Failed' },
-  'validation-timeout': { icon: AlertCircle, color: 'text-orange-400', label: 'Validation Timeout' },
+  'queued': { icon: Clock, color: 'text-gray-400', bg: 'bg-gray-50', label: 'Queued' },
+  'running': { icon: Loader2, color: 'text-blue-500', bg: 'bg-blue-50', label: 'Running' },
+  'awaiting-review': { icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-50', label: 'Awaiting Review' },
+  'completed': { icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-50', label: 'Completed' },
+  'failed': { icon: XCircle, color: 'text-red-500', bg: 'bg-red-50', label: 'Failed' },
+  'validation-timeout': { icon: AlertCircle, color: 'text-orange-500', bg: 'bg-orange-50', label: 'Validation Timeout' },
 }
 
 export default function JobHistoryPage() {
@@ -56,18 +56,15 @@ export default function JobHistoryPage() {
   return (
     <div>
       <div className="mb-6">
-        <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 mb-3">
-          <span className="text-xs font-medium text-purple-400">History</span>
-        </div>
-        <h1 className="text-2xl font-semibold tracking-tight text-white">Job History</h1>
-        <p className="text-sm text-gray-400 mt-1">View and manage all past migration jobs</p>
+        <h1 className="text-2xl font-bold text-gray-900">Job History</h1>
+        <p className="text-sm text-gray-500 mt-1">View and manage all past migration jobs</p>
       </div>
 
       <FilterBar filters={filters} onChange={setFilters} />
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="w-6 h-6 text-purple-400 animate-spin" />
+          <Loader2 className="w-6 h-6 text-violet-600 animate-spin" />
         </div>
       ) : (
         <>
@@ -79,7 +76,7 @@ export default function JobHistoryPage() {
           />
 
           {filteredJobs.length === 0 && (
-            <div className="text-center py-16 text-gray-500">
+            <div className="text-center py-16 text-gray-400">
               <p className="text-sm">No jobs match your filters</p>
             </div>
           )}

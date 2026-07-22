@@ -4,7 +4,7 @@ import Sidebar from './Sidebar.jsx'
 
 export default function Layout() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0a0a0f] text-[#f1f1f7]">
+    <div className="min-h-screen flex flex-col bg-white font-mono">
       <TopNavBar />
       <div className="flex flex-1">
         <Sidebar />

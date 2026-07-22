@@ -13,14 +13,14 @@ export default function TopNavBar() {
   ]
 
   return (
-    <header className="glass-nav sticky top-0 z-50">
+    <header className="border-b-2 border-black bg-white sticky top-0 z-50">
       <div className="flex items-center justify-between px-4 lg:px-6 h-14">
         <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2.5 font-semibold text-base tracking-tight">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
-              <Terminal className="w-4 h-4 text-white" />
+          <Link to="/" className="flex items-center gap-2 font-bold text-lg text-black uppercase tracking-tight">
+            <div className="border-2 border-black p-1">
+              <Terminal className="w-5 h-5" />
             </div>
-            <span className="hidden sm:inline">CodeShift <span className="text-gradient font-bold">AI</span></span>
+            <span>CodeShift <span className="text-lime-600">AI</span></span>
           </Link>
         </div>
 
@@ -29,10 +29,10 @@ export default function TopNavBar() {
             <Link
               key={link.to}
               to={link.to}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+              className={`px-3 py-2 text-sm font-bold uppercase border-2 ${
                 location.pathname.startsWith(link.to)
-                  ? 'bg-white/10 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-black text-white border-black'
+                  : 'text-black border-transparent hover:border-black'
               }`}
             >
               {link.label}
@@ -41,15 +41,15 @@ export default function TopNavBar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg glass cursor-pointer hover:bg-white/10 transition-all duration-200">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-[10px] font-bold text-white">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 border-2 border-black cursor-pointer hover:bg-black hover:text-white transition-colors">
+            <div className="w-6 h-6 border-2 border-black flex items-center justify-center text-xs font-bold hover:border-white">
               MH
             </div>
-            <span className="text-sm font-medium text-gray-300">Mudasir</span>
-            <ChevronDown className="w-4 h-4 text-gray-500" />
+            <span className="text-sm font-bold uppercase">Mudasir</span>
+            <ChevronDown className="w-4 h-4" />
           </div>
           <button
-            className="md:hidden p-2 rounded-lg glass hover:bg-white/10 transition-all"
+            className="md:hidden p-2 border-2 border-black hover:bg-black hover:text-white"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -58,16 +58,16 @@ export default function TopNavBar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-white/5 px-4 py-3 bg-[#0a0a0f]">
+        <div className="md:hidden border-t-2 border-black px-4 py-3 bg-white">
           {navLinks.map(link => (
             <Link
               key={link.to}
               to={link.to}
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2 text-sm font-medium rounded-lg mb-1 ${
+              className={`block px-3 py-2 text-sm font-bold uppercase border-2 mb-1 ${
                 location.pathname.startsWith(link.to)
-                  ? 'bg-white/10 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-black text-white border-black'
+                  : 'text-black border-transparent hover:border-black'
               }`}
             >
               {link.label}

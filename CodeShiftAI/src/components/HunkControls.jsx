@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Check, X, Edit3, MessageSquare, Save } from 'lucide-react'
 
-export default function HunkControls({ hunkId, decision, onDecision, migrated }) {
+export default function HunkControls({ hunkId, decision, onDecision, original, migrated }) {
   const [editing, setEditing] = useState(false)
   const [editedCode, setEditedCode] = useState(migrated)
   const [comment, setComment] = useState('')
@@ -12,7 +12,7 @@ export default function HunkControls({ hunkId, decision, onDecision, migrated })
     setEditing(false)
   }
 
-  const buttonBase = 'flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl border transition-all'
+  const buttonBase = 'flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors'
 
   if (editing) {
     return (
@@ -20,13 +20,13 @@ export default function HunkControls({ hunkId, decision, onDecision, migrated })
         <textarea
           value={editedCode}
           onChange={e => setEditedCode(e.target.value)}
-          className="w-full h-32 font-mono text-xs p-3 bg-white/5 border border-white/10 rounded-xl text-gray-200 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 resize-none"
+          className="w-full h-32 font-mono text-xs p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
         />
         <div className="flex items-center gap-2">
-          <button onClick={handleSaveEdit} className={`${buttonBase} bg-gradient-to-r from-purple-600 to-pink-600 text-white border-transparent hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-500/20`}>
+          <button onClick={handleSaveEdit} className={`${buttonBase} bg-violet-600 text-white border-violet-600 hover:bg-violet-700`}>
             <Save className="w-3.5 h-3.5" /> Save
           </button>
-          <button onClick={() => setEditing(false)} className={`${buttonBase} border-white/10 text-gray-400 hover:bg-white/5`}>
+          <button onClick={() => setEditing(false)} className={`${buttonBase} border-gray-200 text-gray-600 hover:bg-gray-50`}>
             Cancel
           </button>
         </div>
@@ -41,8 +41,8 @@ export default function HunkControls({ hunkId, decision, onDecision, migrated })
           onClick={() => onDecision(hunkId, 'accepted')}
           className={`${buttonBase} ${
             decision === 'accepted'
-              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-              : 'border-white/10 text-gray-400 hover:bg-emerald-500/10 hover:border-emerald-500/30'
+              ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
+              : 'border-gray-200 text-gray-600 hover:bg-emerald-50 hover:border-emerald-300'
           }`}
         >
           <Check className="w-3.5 h-3.5" /> Accept
@@ -51,21 +51,21 @@ export default function HunkControls({ hunkId, decision, onDecision, migrated })
           onClick={() => onDecision(hunkId, 'rejected')}
           className={`${buttonBase} ${
             decision === 'rejected'
-              ? 'bg-red-500/10 border-red-500/30 text-red-400'
-              : 'border-white/10 text-gray-400 hover:bg-red-500/10 hover:border-red-500/30'
+              ? 'bg-red-50 border-red-300 text-red-700'
+              : 'border-gray-200 text-gray-600 hover:bg-red-50 hover:border-red-300'
           }`}
         >
           <X className="w-3.5 h-3.5" /> Reject
         </button>
         <button
           onClick={() => { setEditedCode(migrated); setEditing(true) }}
-          className={`${buttonBase} border-white/10 text-gray-400 hover:bg-amber-500/10 hover:border-amber-500/30`}
+          className={`${buttonBase} border-gray-200 text-gray-600 hover:bg-amber-50 hover:border-amber-300`}
         >
           <Edit3 className="w-3.5 h-3.5" /> Edit
         </button>
         <button
           onClick={() => setShowComment(!showComment)}
-          className={`${buttonBase} border-white/10 text-gray-400 hover:bg-blue-500/10 hover:border-blue-500/30`}
+          className={`${buttonBase} border-gray-200 text-gray-600 hover:bg-blue-50 hover:border-blue-300`}
         >
           <MessageSquare className="w-3.5 h-3.5" />
           {showComment ? 'Hide' : 'Comment'}
@@ -79,10 +79,10 @@ export default function HunkControls({ hunkId, decision, onDecision, migrated })
             placeholder="Add a review comment..."
             value={comment}
             onChange={e => setComment(e.target.value)}
-            className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-xl text-gray-200 placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30"
+            className="flex-1 px-3 py-1.5 text-xs border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
           {comment && (
-            <button className="px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl hover:from-purple-500 hover:to-pink-500 transition-all shadow-lg shadow-purple-500/20">
+            <button className="px-3 py-1.5 text-xs font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700">
               Send
             </button>
           )}
@@ -91,8 +91,8 @@ export default function HunkControls({ hunkId, decision, onDecision, migrated })
 
       {decision && decision !== 'pending' && (
         <div className={`text-xs ${
-          decision === 'accepted' ? 'text-emerald-400' :
-          decision === 'rejected' ? 'text-red-400' : 'text-amber-400'
+          decision === 'accepted' ? 'text-emerald-600' :
+          decision === 'rejected' ? 'text-red-600' : 'text-amber-600'
         }`}>
           {decision === 'accepted' ? '✓ Accepted' :
            decision === 'rejected' ? '✗ Rejected' : '✎ Edited'}
