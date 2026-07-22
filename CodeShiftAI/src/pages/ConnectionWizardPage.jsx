@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Check, Search, X, FolderGit2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Search, FolderGit2 } from 'lucide-react'
 import { GithubIcon, GitlabIcon, BitbucketIcon } from '../components/BrandIcons.jsx'
 import { repositories, migrationPairs, providers } from '../mock/repositories.js'
 import { createJob } from '../mock/migrations.js'
 import { useApp } from '../context/AppContext.jsx'
+import PageContainer from '../components/PageContainer.jsx'
 
 const providerIcons = { github: GithubIcon, gitlab: GitlabIcon, bitbucket: BitbucketIcon }
 
@@ -60,19 +61,26 @@ export default function ConnectionWizardPage() {
   const progress = (step / 3) * 100
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-4">
-        <ArrowLeft className="w-4 h-4" /> Back
+    <PageContainer maxWidth="max-w-2xl">
+      <button
+        onClick={() => navigate(-1)}
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 mb-6 transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back
       </button>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
         <div className="p-6 border-b border-gray-100">
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center justify-between mb-2">
             <h2 className="text-lg font-bold text-gray-900">New Migration</h2>
-            <span className="text-xs text-gray-400">Step {step} of 3</span>
+            <span className="text-xs text-gray-400 font-medium">Step {step} of 3</span>
           </div>
           <div className="w-full bg-gray-100 rounded-full h-1.5">
-            <div className="bg-violet-600 h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+            <div
+              className="bg-violet-600 h-1.5 rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
 
@@ -106,7 +114,12 @@ export default function ConnectionWizardPage() {
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-gray-700">Select Repository</h3>
-              <button onClick={() => setStep(1)} className="text-xs text-violet-600 hover:text-violet-800">Change provider</button>
+              <button
+                onClick={() => setStep(1)}
+                className="text-xs font-medium text-violet-600 hover:text-violet-800 transition-colors"
+              >
+                Change provider
+              </button>
             </div>
 
             <div className="relative mb-4">
@@ -133,10 +146,12 @@ export default function ConnectionWizardPage() {
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <FolderGit2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                            <span className="truncate font-medium">{repo.name}</span>
+                    <span className="truncate font-medium">{repo.name}</span>
                     <span className="text-xs text-gray-400 truncate">{repo.language}</span>
                   </div>
-                  {selectedRepo?.id === repo.id && <Check className="w-4 h-4 text-violet-600 flex-shrink-0" />}
+                  {selectedRepo?.id === repo.id && (
+                    <Check className="w-4 h-4 text-violet-600 flex-shrink-0" />
+                  )}
                 </button>
               ))}
               {filteredRepos.length === 0 && (
@@ -184,7 +199,7 @@ export default function ConnectionWizardPage() {
             <div className="bg-gray-50 rounded-lg p-3 mb-4">
               <div className="flex items-center gap-2 text-sm">
                 <FolderGit2 className="w-4 h-4 text-gray-400" />
-                            <span className="font-medium">{selectedRepo?.name}</span>
+                <span className="font-medium">{selectedRepo?.name}</span>
                 <span className="text-gray-400">({selectedBranch})</span>
               </div>
             </div>
@@ -211,7 +226,10 @@ export default function ConnectionWizardPage() {
             </div>
 
             <div className="mt-6 flex items-center justify-between">
-              <button onClick={() => setStep(2)} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+              <button
+                onClick={() => setStep(2)}
+                className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
+              >
                 <ArrowLeft className="w-4 h-4" /> Back
               </button>
               <button
@@ -226,6 +244,6 @@ export default function ConnectionWizardPage() {
           </div>
         )}
       </div>
-    </div>
+    </PageContainer>
   )
 }

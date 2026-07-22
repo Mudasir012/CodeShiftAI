@@ -5,6 +5,8 @@ import { getJobs } from '../mock/migrations.js'
 import FilterBar from '../components/FilterBar.jsx'
 import JobTable from '../components/JobTable.jsx'
 import JobDetailDrawer from '../components/JobDetailDrawer.jsx'
+import PageContainer from '../components/PageContainer.jsx'
+import PageHeader from '../components/PageHeader.jsx'
 
 const statusConfig = {
   'queued': { icon: Clock, color: 'text-gray-400', bg: 'bg-gray-50', label: 'Queued' },
@@ -54,11 +56,11 @@ export default function JobHistoryPage() {
   }
 
   return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Job History</h1>
-        <p className="text-sm text-gray-500 mt-1">View and manage all past migration jobs</p>
-      </div>
+    <PageContainer>
+      <PageHeader
+        title="Job History"
+        description="View and manage all past migration jobs"
+      />
 
       <FilterBar filters={filters} onChange={setFilters} />
 
@@ -91,6 +93,6 @@ export default function JobHistoryPage() {
           onNavigate={(id) => { setDrawerOpen(false); navigate(`/migrations/${id}`) }}
         />
       )}
-    </div>
+    </PageContainer>
   )
 }

@@ -14,7 +14,7 @@ const statusIcons = {
 }
 
 const statusColors = {
-  'queued': 'text-gray-500',
+  'queued': 'text-gray-400',
   'running': 'text-blue-600',
   'awaiting-review': 'text-amber-600',
   'completed': 'text-emerald-600',
@@ -48,13 +48,13 @@ export default function Sidebar() {
   })
 
   return (
-    <aside className="hidden lg:block w-72 bg-white border-r-2 border-black flex-shrink-0 overflow-y-auto">
-      <div className="p-4 border-b-2 border-black">
-        <h2 className="text-xs font-bold text-black uppercase tracking-wider">Recent Jobs</h2>
+    <aside className="hidden lg:block w-72 bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto">
+      <div className="p-4 border-b border-gray-100">
+        <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Recent Jobs</h2>
       </div>
 
       {state.jobs.length === 0 ? (
-        <div className="p-4 text-sm text-gray-400 text-center font-bold uppercase">No migration jobs yet</div>
+        <div className="p-4 text-sm text-gray-400 text-center">No migration jobs yet</div>
       ) : (
         <div className="p-3 space-y-4">
           {groupOrder.map(status => {
@@ -65,7 +65,7 @@ export default function Sidebar() {
 
             return (
               <div key={status}>
-                <div className={`flex items-center gap-1.5 px-2 py-1 text-xs font-bold uppercase ${color}`}>
+                <div className={`flex items-center gap-1.5 px-2 py-1 text-xs font-semibold ${color}`}>
                   <Icon className={`w-3.5 h-3.5 ${status === 'running' ? 'animate-spin' : ''}`} />
                   {statusLabels[status]}
                   <span className="ml-auto">{jobs.length}</span>
@@ -75,14 +75,14 @@ export default function Sidebar() {
                     <Link
                       key={job.id}
                       to={`/migrations/${job.id}`}
-                      className={`flex items-center justify-between px-2 py-1.5 text-sm border-2 ${
+                      className={`flex items-center justify-between px-3 py-1.5 text-sm rounded-md transition-colors ${
                         location.pathname.includes(job.id)
-                          ? 'bg-black text-white border-black'
-                          : 'text-gray-700 border-transparent hover:border-black'
+                          ? 'bg-gray-100 text-gray-900'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                       }`}
                     >
-                      <span className="truncate max-w-[160px] font-bold">{job.repoName}</span>
-                      <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span className="truncate max-w-[160px] font-medium">{job.repoName}</span>
+                      <ArrowRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-300" />
                     </Link>
                   ))}
                 </div>
@@ -92,12 +92,12 @@ export default function Sidebar() {
         </div>
       )}
 
-      <div className="p-4 border-t-2 border-black">
+      <div className="p-4 border-t border-gray-100">
         <Link
           to="/history"
-          className="block w-full text-center px-3 py-2 text-sm font-bold text-black border-2 border-black hover:bg-black hover:text-white transition-colors uppercase"
+          className="block w-full text-center px-3 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50 hover:text-gray-900 transition-colors"
         >
-          View all jobs →
+          View all jobs &rarr;
         </Link>
       </div>
     </aside>

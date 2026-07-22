@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, Loader2, TestTube, GitBranch, Eye, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, Loader2, TestTube, Eye, AlertTriangle } from 'lucide-react'
 import { useApp } from '../context/AppContext.jsx'
 import { getJob } from '../mock/migrations.js'
 import ProgressStepper from '../components/ProgressStepper.jsx'
 import LogConsole from '../components/LogConsole.jsx'
 import ProgressBar from '../components/ProgressBar.jsx'
+import PageContainer from '../components/PageContainer.jsx'
 
 export default function MigrationProgressPage() {
   const { id } = useParams()
@@ -57,19 +58,23 @@ export default function MigrationProgressPage() {
 
   if (status === 'loading') {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-6 h-6 text-violet-600 animate-spin" />
-      </div>
+      <PageContainer>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="w-6 h-6 text-violet-600 animate-spin" />
+        </div>
+      </PageContainer>
     )
   }
 
   if (status === 'not-found') {
     return (
-      <div className="text-center py-16">
-        <h2 className="text-lg font-semibold text-gray-900">Job not found</h2>
-        <p className="text-sm text-gray-500 mt-1">This migration job does not exist.</p>
-        <button onClick={() => navigate('/')} className="mt-4 text-sm text-violet-600 hover:text-violet-800">Return to Dashboard</button>
-      </div>
+      <PageContainer>
+        <div className="text-center py-16">
+          <h2 className="text-lg font-semibold text-gray-900">Job not found</h2>
+          <p className="text-sm text-gray-500 mt-1">This migration job does not exist.</p>
+          <button onClick={() => navigate('/')} className="mt-4 text-sm text-violet-600 hover:text-violet-800">Return to Dashboard</button>
+        </div>
+      </PageContainer>
     )
   }
 
@@ -78,38 +83,41 @@ export default function MigrationProgressPage() {
   const isFailed = status === 'failed' || status === 'validation-timeout'
 
   return (
-    <div>
-      <button onClick={() => navigate('/')} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-4">
+    <PageContainer>
+      <button
+        onClick={() => navigate('/')}
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 mb-6 transition-colors"
+      >
         <ArrowLeft className="w-4 h-4" /> Back to Dashboard
       </button>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <h1 className="text-lg font-bold text-gray-900">{job?.repoName}</h1>
-            <p className="text-sm text-gray-500">{job?.sourceVersion} → {job?.targetVersion}</p>
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="text-lg font-bold text-gray-900 truncate">{job?.repoName}</h1>
+            <p className="text-sm text-gray-500 mt-0.5">{job?.sourceVersion} &rarr; {job?.targetVersion}</p>
           </div>
-          <div className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 ${
+          <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 whitespace-nowrap ${
             isActive ? 'bg-blue-50 text-blue-700' :
             isComplete ? 'bg-emerald-50 text-emerald-700' :
             'bg-red-50 text-red-700'
           }`}>
             {isActive && <Loader2 className="w-3 h-3 animate-spin" />}
             {job?.status?.replace('-', ' ')}
-          </div>
+          </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
             <h2 className="text-sm font-semibold text-gray-700 mb-4">Pipeline Progress</h2>
             <ProgressStepper currentStage={stage} status={status} />
             <div className="mt-4">
               <ProgressBar progress={progress} status={status} />
             </div>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
             <div className="px-6 py-3 border-b border-gray-100 flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-700">Console Log</h2>
               <span className="text-xs text-gray-400">{logs.length} entries</span>
@@ -118,8 +126,8 @@ export default function MigrationProgressPage() {
           </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
             <h3 className="text-sm font-semibold text-gray-700 mb-3">Migration Details</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
@@ -146,7 +154,7 @@ export default function MigrationProgressPage() {
           </div>
 
           {diffData && (
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
               <h3 className="text-sm font-semibold text-gray-700 mb-3">Diff Summary</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2 text-emerald-600">
@@ -182,7 +190,7 @@ export default function MigrationProgressPage() {
           {isComplete && (
             <button
               onClick={() => navigate(`/migrations/${id}/review`)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-violet-600 text-white rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors shadow-sm"
             >
               <Eye className="w-4 h-4" />
               Review Changes
@@ -204,6 +212,6 @@ export default function MigrationProgressPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageContainer>
   )
 }

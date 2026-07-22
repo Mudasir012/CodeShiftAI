@@ -5,6 +5,8 @@ import { GithubIcon, GitlabIcon, BitbucketIcon } from '../components/BrandIcons.
 import { useApp } from '../context/AppContext.jsx'
 import { repositories } from '../mock/repositories.js'
 import RepositoryCard from '../components/RepositoryCard.jsx'
+import PageContainer from '../components/PageContainer.jsx'
+import PageHeader from '../components/PageHeader.jsx'
 
 const providerIcons = { github: GithubIcon, gitlab: GitlabIcon, bitbucket: BitbucketIcon }
 
@@ -37,63 +39,55 @@ export default function DashboardPage() {
   }, null)
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-black">
-        <div className="flex items-center gap-4">
-          <div className="inline-block border-2 border-fuchsia-400 bg-fuchsia-400 text-black px-3 py-1 text-xs font-bold -rotate-1">
-            DASHBOARD
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-black uppercase tracking-tight">Repositories</h1>
-            <p className="text-sm text-gray-500 mt-1 uppercase tracking-wide">Connect a repository to start a code migration</p>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/connect')}
-          className="flex items-center gap-2 px-4 py-2 bg-lime-400 text-black font-bold border-2 border-black hover:bg-lime-500 text-sm uppercase group"
-        >
-          <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
-          Connect Repository
-        </button>
-      </div>
+    <PageContainer>
+      <PageHeader
+        title="Dashboard"
+        description="Connect a repository to start a code migration"
+        action={
+          <button
+            onClick={() => navigate('/connect')}
+            className="flex items-center gap-2 px-4 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors whitespace-nowrap"
+          >
+            <Plus className="w-4 h-4" />
+            Connect Repository
+          </button>
+        }
+      />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
           { icon: HardDrive, label: 'Repositories', value: connectedCount },
           { icon: GitFork, label: 'Providers', value: providerCount },
           { icon: Activity, label: 'Migrated', value: migratedCount },
           { icon: Activity, label: 'Last Activity', value: lastActive ? formatDate(lastActive) : 'N/A' },
-        ].map((stat, i) => {
-          const rotations = ['', '-rotate-1', 'rotate-1', '']
+        ].map((stat) => {
           const Icon = stat.icon
           return (
-            <div key={stat.label} className={`border-2 border-black p-4 bg-white ${rotations[i]}`}>
+            <div key={stat.label} className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-1">
-                <Icon className="w-4 h-4" />
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{stat.label}</span>
+                <Icon className="w-4 h-4 text-gray-400" />
+                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{stat.label}</span>
               </div>
-              <div className="text-2xl font-bold text-black">{stat.value}</div>
+              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
             </div>
           )
         })}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {repos.map((repo, i) => {
+        {repos.map((repo) => {
           const ProviderIcon = providerIcons[repo.provider] || Code2
-          const rotations = ['', '-rotate-1', 'rotate-1', '', '-rotate-1', 'rotate-1']
           return (
-            <div key={repo.id} className={rotations[i]}>
-              <RepositoryCard
-                repo={repo}
-                ProviderIcon={ProviderIcon}
-                formatDate={formatDate}
-                onMigrate={() => navigate(`/connect?repo=${repo.id}`)}
-              />
-            </div>
+            <RepositoryCard
+              key={repo.id}
+              repo={repo}
+              ProviderIcon={ProviderIcon}
+              formatDate={formatDate}
+              onMigrate={() => navigate(`/connect?repo=${repo.id}`)}
+            />
           )
         })}
       </div>
-    </div>
+    </PageContainer>
   )
 }
