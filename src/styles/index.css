@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #E8E8E8;
+  --color-ink: #0A0A0A;
+  --color-signal: #FF2D00;
+  --color-hyper: #0033FF;
+  --color-concrete: #B0B0B0;
+  --color-white: #FFFFFF;
+  --color-legacy: #5A5A5A;
+
+  --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'JetBrains Mono', 'Courier New', monospace;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    background: var(--color-paper);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-white);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+@keyframes blink {
+  0%, 45% { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@utility animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@utility animate-marquee-left {
+  animation: marquee-left var(--marquee-duration, 30s) linear infinite;
+}
+
+@utility animate-marquee-right {
+  animation: marquee-right var(--marquee-duration, 30s) linear infinite;
+}
+
+@utility animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+@utility animate-glitch {
+  animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Scale down border-3 from 3px -> 2px globally */
+.border-3 { border-width: 2px; }
+.border-t-3 { border-top-width: 2px; }
+.border-b-3 { border-bottom-width: 2px; }
+.border-l-3 { border-left-width: 2px; }
+.border-r-3 { border-right-width: 2px; }
+.border-y-3 { border-top-width: 2px; border-bottom-width: 2px; }
