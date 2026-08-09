@@ -112,13 +112,13 @@ export default function Home() {
             
             {/* Bold Image Banner */}
             <div className="lg:col-span-7 relative">
-              <div className="border-3 border-ink bg-ink shadow-[8px_8px_0_0_#FF2D00] overflow-hidden group">
+              <div className="border-3 border-ink bg-ink shadow-[6px_6px_0_0_#0A0A0A] overflow-hidden group">
                 <img
                   src="/assets/brutalist-mascot-lab.jpg"
                   alt="CodeShiftAI Cybernetic Laboratory with ShiftBot Mascot"
-                  className="w-full h-auto object-cover filter contrast-105 transition-transform duration-500 group-hover:scale-102"
+                  className="w-full h-auto object-cover opacity-90 filter contrast-100 grayscale hover:grayscale-0 transition-all duration-500"
                 />
-                <div className="p-4 bg-ink border-t-3 border-ink flex items-center justify-between font-mono text-xs text-paper">
+                <div className="p-3.5 bg-ink border-t-3 border-ink flex items-center justify-between font-mono text-xs text-paper">
                   <span className="text-signal font-bold">$ TELEMETRY: REALTIME_PARSING</span>
                   <span className="text-concrete text-[10px]">LOC: 14,209,100+</span>
                 </div>
@@ -162,11 +162,11 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="border-3 border-ink bg-ink shadow-[8px_8px_0_0_#0033FF] overflow-hidden">
+            <div className="border-3 border-ink bg-ink shadow-[6px_6px_0_0_#0A0A0A] overflow-hidden group">
               <img
                 src="/assets/brutalist-transform.jpg"
-                alt="Brutalist Code Shift Visualizer"
-                className="w-full h-auto object-cover"
+                alt="Subtle Code Shift Visualizer"
+                className="w-full h-auto object-cover opacity-90 filter contrast-100 grayscale hover:grayscale-0 transition-all duration-500"
               />
             </div>
 

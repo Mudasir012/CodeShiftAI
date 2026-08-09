@@ -34,8 +34,8 @@ export default function Login() {
         
         {/* LEFT COLUMN: Brutalist Hero Graphic & Interactive Mascot */}
         <div className="relative bg-ink text-paper p-8 lg:p-12 flex flex-col justify-between overflow-hidden border-b-3 lg:border-b-0 lg:border-r-3 border-ink group">
-          {/* Background Hero Image with Brutalist Blend & Grid */}
-          <div className="absolute inset-0 z-0 opacity-40 mix-blend-luminosity bg-cover bg-center transition-transform duration-700 hover:scale-105"
+          {/* Background Hero Image with Subtle Brutalist Blend & Grid */}
+          <div className="absolute inset-0 z-0 opacity-20 mix-blend-luminosity bg-cover bg-center transition-opacity duration-500 hover:opacity-30"
             style={{ backgroundImage: `url('/assets/brutalist-hero.jpg')` }}
           />
           {/* Grid lines overlay */}
