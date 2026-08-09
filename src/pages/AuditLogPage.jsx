@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Mascot from '../components/Mascot';
 
 const MOCK_LOGS = [
   { id: 'LOG-1092', timestamp: '2026-08-09T23:38:12Z', level: 'INFO', scope: 'AST_PARSER', message: 'Successfully parsed 4,120 COBOL AST nodes in account_bal.cbl' },
@@ -33,9 +34,12 @@ export default function AuditLogPage() {
           </h1>
         </div>
 
-        <div className="flex items-center gap-2 font-mono text-xs">
-          <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
-          <span className="font-bold text-ink uppercase">Live Log Stream Active</span>
+        <div className="flex items-center gap-4">
+          <Mascot mode="audit" className="scale-65 -my-6" />
+          <div className="hidden md:flex items-center gap-2 font-mono text-xs">
+            <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
+            <span className="font-bold text-ink uppercase">Live Log Stream Active</span>
+          </div>
         </div>
       </div>
 

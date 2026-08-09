@@ -95,7 +95,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex justify-center mb-4">
-                  <Mascot isCoveringEyes={mascotPeek} />
+                  <Mascot mode="home" isCoveringEyes={mascotPeek} />
                 </div>
 
                 <CodeTree />

@@ -59,7 +59,7 @@ export default function Login() {
 
           {/* Center Content: Interactive Mascot & Headline */}
           <div className="relative z-10 my-8 flex flex-col items-center text-center">
-            <Mascot isCoveringEyes={isCoveringEyes} className="mb-6" />
+            <Mascot mode="login" isCoveringEyes={isCoveringEyes} className="mb-6" />
             
             <h2 className="text-[clamp(1.8rem,3vw,2.8rem)] font-display font-bold uppercase leading-none tracking-tight text-paper mb-3">
               Modernize <br />

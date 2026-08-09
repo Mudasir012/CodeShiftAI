@@ -35,7 +35,7 @@ export default function Dashboard() {
           onMouseLeave={() => setMascotCover(false)}
           className="border-3 border-ink bg-paper p-4 shadow-[4px_4px_0_0_#0A0A0A] flex items-center gap-4 shrink-0 transition-all hover:border-signal"
         >
-          <Mascot isCoveringEyes={mascotCover} className="scale-75 -my-4 -mx-2" />
+          <Mascot mode="dashboard" isCoveringEyes={mascotCover} className="scale-75 -my-4 -mx-2" />
           <div className="font-mono text-xs">
             <span className="font-bold text-ink block">ShiftBot Copilot</span>
             <span className="text-[10px] text-concrete block mb-2">Hover to shield eyes</span>

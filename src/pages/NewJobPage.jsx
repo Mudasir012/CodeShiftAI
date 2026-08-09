@@ -53,7 +53,7 @@ export default function NewJobPage() {
           </h1>
         </div>
         <div className="hidden sm:block">
-          <Mascot isCoveringEyes={isLaunching} className="scale-65 -my-6" />
+          <Mascot mode="new-job" isCoveringEyes={isLaunching} className="scale-65 -my-6" />
         </div>
       </div>
 
