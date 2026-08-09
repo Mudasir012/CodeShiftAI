@@ -10,6 +10,8 @@ import Typewriter from '../components/Typewriter';
 import ScrambleText from '../components/ScrambleText';
 import Marquee from '../components/Marquee';
 import AsciiArt from '../components/AsciiArt';
+import ParticleBackground from '../components/ParticleBackground';
+import CodeDiffViewer from '../components/CodeDiffViewer';
 
 const PROOFS = [
   'A European bank — 1.2M lines of COBOL → Go, 6-month engagement, zero regressions',
@@ -32,7 +34,9 @@ export default function Home() {
 
       {/* HERO SECTION */}
       <section className="border-b-3 border-ink relative overflow-hidden bg-paper">
-        <div className="max-w-7xl mx-auto px-6 pt-10 pb-16">
+        {/* Particle background — sits behind content */}
+        <ParticleBackground />
+        <div className="max-w-7xl mx-auto px-6 pt-10 pb-16 relative z-10">
           <div className="mb-6 overflow-hidden">
             <AsciiArt className="w-full" />
           </div>
@@ -199,6 +203,22 @@ export default function Home() {
 
       {/* STATS */}
       <StatsBand />
+
+      {/* LIVE CODE DIFF VIEWER SECTION */}
+      <section className="border-t-3 border-b-3 border-ink bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-14">
+          <div className="mb-8">
+            <span className="font-mono font-bold text-xs text-concrete mb-3 block">// LIVE_TRANSFORMATION_PREVIEW</span>
+            <h2 className="text-[clamp(1.4rem,3vw,2.4rem)] font-bold -tracking-[0.04em] mb-3 uppercase">
+              Watch the transformation happen
+            </h2>
+            <p className="text-concrete text-sm max-w-[500px] font-mono">
+              CodeShiftAI converts legacy code line-by-line, preserving behavioral equivalence down to the AST node level.
+            </p>
+          </div>
+          <CodeDiffViewer />
+        </div>
+      </section>
 
       {/* CLIENT LOGOS */}
       <ClientLogos />

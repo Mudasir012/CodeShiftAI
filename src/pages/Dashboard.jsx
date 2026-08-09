@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Mascot from '../components/Mascot';
+import StatCard from '../components/StatCard';
+import ContributionGraph from '../components/ContributionGraph';
+import LanguageStatsBar from '../components/LanguageStatsBar';
+import ActivityFeed from '../components/ActivityFeed';
 
 const RECENT_JOBS = [
   { id: 'JOB-9421', repo: 'acme-corp/legacy-cobol-core', branch: 'main', source: 'COBOL', target: 'Go', progress: 85, status: 'IN_PROGRESS', date: '10 mins ago' },
@@ -13,7 +17,7 @@ export default function Dashboard() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-paper">
-      
+
       {/* HEADER & WELCOME HUB */}
       <div className="border-3 border-ink bg-white p-6 sm:p-8 shadow-[6px_6px_0_0_#0A0A0A] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
@@ -46,27 +50,50 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* KEY METRICS SUMMARY */}
+      {/* KEY METRICS — Stat Cards with Sparklines */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="border-3 border-ink bg-white p-5 shadow-[4px_4px_0_0_#0A0A0A] font-mono">
-          <span className="text-[11px] text-concrete uppercase font-bold block mb-1">Total LOC Converted</span>
-          <span className="text-2xl font-bold text-ink font-display">1,420,900</span>
-          <span className="text-[10px] text-signal font-bold block mt-1">+12.4% this month</span>
+        <StatCard
+          label="Total LOC Converted"
+          value="1,420,900"
+          sub="+12.4% this month"
+          accentColor="#FF2D00"
+          icon="📄"
+        />
+        <StatCard
+          label="Active Pipelines"
+          value="4"
+          sub="2 queued for verify"
+          accentColor="#0033FF"
+          icon="⚡"
+        />
+        <StatCard
+          label="Test Pass Rate"
+          value="99.8%"
+          sub="Behavioral equivalence"
+          accentColor="#00AA44"
+          icon="✅"
+        />
+        <StatCard
+          label="Cost Saved"
+          value="$482K"
+          sub="Vs manual rewrite"
+          accentColor="#AA44FF"
+          icon="💸"
+        />
+      </div>
+
+      {/* CONTRIBUTION GRAPH */}
+      <div className="border-3 border-ink bg-white p-6 shadow-[6px_6px_0_0_#0A0A0A] relative">
+        <ContributionGraph />
+      </div>
+
+      {/* LANGUAGE BREAKDOWN + ACTIVITY FEED */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 border-3 border-ink bg-white p-6 shadow-[6px_6px_0_0_#0A0A0A]">
+          <LanguageStatsBar />
         </div>
-        <div className="border-3 border-ink bg-white p-5 shadow-[4px_4px_0_0_#0A0A0A] font-mono">
-          <span className="text-[11px] text-concrete uppercase font-bold block mb-1">Active Pipelines</span>
-          <span className="text-2xl font-bold text-signal font-display">4 Running</span>
-          <span className="text-[10px] text-concrete block mt-1">2 queued for verification</span>
-        </div>
-        <div className="border-3 border-ink bg-white p-5 shadow-[4px_4px_0_0_#0A0A0A] font-mono">
-          <span className="text-[11px] text-concrete uppercase font-bold block mb-1">Test Pass Rate</span>
-          <span className="text-2xl font-bold text-ink font-display">99.8%</span>
-          <span className="text-[10px] text-concrete block mt-1">Behavioral equivalence</span>
-        </div>
-        <div className="border-3 border-ink bg-white p-5 shadow-[4px_4px_0_0_#0A0A0A] font-mono">
-          <span className="text-[11px] text-concrete uppercase font-bold block mb-1">Cost Saved</span>
-          <span className="text-2xl font-bold text-hyper font-display">$482,000</span>
-          <span className="text-[10px] text-concrete block mt-1">Vs manual rewrite</span>
+        <div className="border-3 border-ink bg-white p-5 shadow-[6px_6px_0_0_#0A0A0A]">
+          <ActivityFeed />
         </div>
       </div>
 
@@ -78,8 +105,8 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Space 1: New Job Wizard */}
           <Link
+            id="nav-new-job"
             to="/new-job"
             className="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_#0A0A0A] hover:shadow-[7px_7px_0_0_#FF2D00] hover:border-signal hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all group flex flex-col justify-between"
           >
@@ -100,8 +127,8 @@ export default function Dashboard() {
             </div>
           </Link>
 
-          {/* Space 2: Jobs Workspace */}
           <Link
+            id="nav-jobs"
             to="/jobs"
             className="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_#0A0A0A] hover:shadow-[7px_7px_0_0_#FF2D00] hover:border-signal hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all group flex flex-col justify-between"
           >
@@ -122,8 +149,8 @@ export default function Dashboard() {
             </div>
           </Link>
 
-          {/* Space 3: Audit & Terminal Stream */}
           <Link
+            id="nav-audit"
             to="/audit-log"
             className="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_#0A0A0A] hover:shadow-[7px_7px_0_0_#FF2D00] hover:border-signal hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all group flex flex-col justify-between"
           >
@@ -144,7 +171,6 @@ export default function Dashboard() {
             </div>
           </Link>
 
-          {/* Space 4: Settings & Integrations */}
           <Link
             to="/settings"
             className="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_#0A0A0A] hover:shadow-[7px_7px_0_0_#FF2D00] hover:border-signal hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all group flex flex-col justify-between"
@@ -168,7 +194,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* RECENT PIPELINE ACTIVITY PREVIEW */}
+      {/* RECENT PIPELINE ACTIVITY */}
       <div className="border-3 border-ink bg-white p-6 shadow-[6px_6px_0_0_#0A0A0A]">
         <div className="flex items-center justify-between border-b-3 border-ink pb-4 mb-4 font-mono text-xs">
           <span className="font-bold text-ink uppercase flex items-center gap-2">
@@ -198,7 +224,10 @@ export default function Dashboard() {
               <div className="flex items-center gap-4 w-full sm:w-auto justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-24 bg-paper border border-ink h-2.5 overflow-hidden">
-                    <div className="bg-signal h-full transition-all duration-300" style={{ width: `${job.progress}%` }} />
+                    <div
+                      className={`h-full transition-all duration-300 ${job.progress === 100 ? 'bg-green-500' : 'bg-signal'}`}
+                      style={{ width: `${job.progress}%` }}
+                    />
                   </div>
                   <span className="text-[10px] font-bold">{job.progress}%</span>
                 </div>
