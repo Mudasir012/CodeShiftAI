@@ -174,17 +174,17 @@ export default function Mascot({ isCoveringEyes = false, className = '' }) {
           className="transition-transform duration-300 ease-out"
           style={{
             transform: isCoveringEyes
-              ? 'translate(10px, -42px) rotate(15deg)'
+              ? 'translate(38px, -74px) rotate(24deg)'
               : 'translate(0px, 0px) rotate(0deg)',
-            transformOrigin: '20px 110px',
+            transformOrigin: '24px 105px',
           }}
         >
           {/* Shoulder/Arm */}
           <path d="M 22 105 Q 10 115 14 135" stroke="#0A0A0A" strokeWidth="4" fill="none" strokeLinecap="round" />
           {/* Hand Glove */}
-          <rect x="4" y="130" width="22" height="20" rx="4" fill="#FF2D00" stroke="#0A0A0A" strokeWidth="3" />
-          <line x1="11" y1="135" x2="11" y2="145" stroke="#0A0A0A" strokeWidth="2" />
-          <line x1="18" y1="135" x2="18" y2="145" stroke="#0A0A0A" strokeWidth="2" />
+          <rect x="4" y="130" width="24" height="22" rx="5" fill="#FF2D00" stroke="#0A0A0A" strokeWidth="3" />
+          <line x1="12" y1="135" x2="12" y2="146" stroke="#0A0A0A" strokeWidth="2" />
+          <line x1="19" y1="135" x2="19" y2="146" stroke="#0A0A0A" strokeWidth="2" />
         </g>
 
         {/* Right Arm & Hand */}
@@ -192,17 +192,17 @@ export default function Mascot({ isCoveringEyes = false, className = '' }) {
           className="transition-transform duration-300 ease-out"
           style={{
             transform: isCoveringEyes
-              ? 'translate(-10px, -42px) rotate(-15deg)'
+              ? 'translate(-38px, -74px) rotate(-24deg)'
               : 'translate(0px, 0px) rotate(0deg)',
-            transformOrigin: '140px 110px',
+            transformOrigin: '136px 105px',
           }}
         >
           {/* Shoulder/Arm */}
           <path d="M 138 105 Q 150 115 146 135" stroke="#0A0A0A" strokeWidth="4" fill="none" strokeLinecap="round" />
           {/* Hand Glove */}
-          <rect x="134" y="130" width="22" height="20" rx="4" fill="#FF2D00" stroke="#0A0A0A" strokeWidth="3" />
-          <line x1="141" y1="135" x2="141" y2="145" stroke="#0A0A0A" strokeWidth="2" />
-          <line x1="148" y1="135" x2="148" y2="145" stroke="#0A0A0A" strokeWidth="2" />
+          <rect x="132" y="130" width="24" height="22" rx="5" fill="#FF2D00" stroke="#0A0A0A" strokeWidth="3" />
+          <line x1="140" y1="135" x2="140" y2="146" stroke="#0A0A0A" strokeWidth="2" />
+          <line x1="147" y1="135" x2="147" y2="146" stroke="#0A0A0A" strokeWidth="2" />
         </g>
       </svg>
     </div>
