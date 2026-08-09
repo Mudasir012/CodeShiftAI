@@ -7,6 +7,11 @@ import Vision from './pages/Vision';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import JobsPage from './pages/JobsPage';
+import NewJobPage from './pages/NewJobPage';
+import AuditLogPage from './pages/AuditLogPage';
+import SettingsPage from './pages/SettingsPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,6 +31,13 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          
+          {/* Platform Space Routes */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/new-job" element={<NewJobPage />} />
+          <Route path="/audit-log" element={<AuditLogPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </main>
       <Footer />

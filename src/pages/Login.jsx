@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Mascot from '../components/Mascot';
 
 export default function Login() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('login'); // 'login' | 'signup'
   const [isCoveringEyes, setIsCoveringEyes] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -26,6 +28,9 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 1000);
   };
 
   return (
