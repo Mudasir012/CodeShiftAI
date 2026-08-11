@@ -17,23 +17,31 @@ const severityOptions = [
   { value: 'CRITICAL', label: 'Critical' },
 ]
 
+const dateOptions = [
+  { value: 'all', label: 'All Time' },
+  { value: 'yesterday', label: 'Yesterday' },
+  { value: 'today', label: 'Today' },
+  { value: 'week', label: 'This Week' },
+]
+
 export default function AuditLogPage() {
   const [entries, setEntries] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [severity, setSeverity] = useState('all')
+  const [dateRange, setDateRange] = useState('all')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [expanded, setExpanded] = useState(null)
 
   useEffect(() => {
     setLoading(true)
-    getAuditLog({ status: severity, search, page, pageSize: 15 }).then(({ items, totalPages: tp }) => {
+    getAuditLog({ status: severity, search, dateRange, page, pageSize: 15 }).then(({ items, totalPages: tp }) => {
       setEntries(items)
       setTotalPages(tp)
       setLoading(false)
     })
-  }, [severity, search, page])
+  }, [severity, search, dateRange, page])
 
   const toggleExpanded = (id) => {
     setExpanded(prev => prev === id ? null : id)
@@ -45,6 +53,30 @@ export default function AuditLogPage() {
         title="Audit Log"
         description="Security-relevant events, pipeline diagnostics, and compliance trail"
       />
+
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        <span className="text-xs text-gray-500 font-medium mr-1">Quick Filter:</span>
+        <button
+          onClick={() => { setDateRange('yesterday'); setPage(1) }}
+          className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+            dateRange === 'yesterday'
+              ? 'bg-violet-600 text-white shadow-sm'
+              : 'bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200'
+          }`}
+        >
+          Yesterday's Logs
+        </button>
+        <button
+          onClick={() => { setDateRange('all'); setSeverity('all'); setSearch(''); setPage(1) }}
+          className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+            dateRange === 'all' && severity === 'all' && !search
+              ? 'bg-gray-200 text-gray-800'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+          }`}
+        >
+          Reset Filters
+        </button>
+      </div>
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
         <div className="relative flex-1 max-w-sm w-full">
@@ -66,8 +98,17 @@ export default function AuditLogPage() {
             <option key={o.value} value={o.value}>{o.label}</option>
           ))}
         </select>
+        <select
+          value={dateRange}
+          onChange={e => { setDateRange(e.target.value); setPage(1) }}
+          className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500"
+        >
+          {dateOptions.map(o => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
         <span className="text-xs text-gray-400 whitespace-nowrap">
-          {entries.length} of {totalPages * 15}+ entries
+          {entries.length} entries shown
         </span>
       </div>
 
