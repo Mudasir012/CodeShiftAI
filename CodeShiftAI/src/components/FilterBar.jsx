@@ -13,6 +13,7 @@ const statusOptions = [
 const dateOptions = [
   { value: 'all', label: 'All Time' },
   { value: 'today', label: 'Today' },
+  { value: 'yesterday', label: 'Yesterday' },
   { value: 'week', label: 'This Week' },
   { value: 'month', label: 'This Month' },
 ]
