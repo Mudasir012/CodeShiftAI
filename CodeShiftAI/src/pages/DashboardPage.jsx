@@ -14,11 +14,12 @@ function formatDate(dateStr) {
   if (!dateStr) return 'Never'
   const d = new Date(dateStr)
   const now = new Date()
-  const diff = now - d
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const startOfNow = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const startOfD = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+  const days = Math.round((startOfNow - startOfD) / (1000 * 60 * 60 * 24))
   if (days === 0) return 'Today'
   if (days === 1) return 'Yesterday'
-  if (days < 7) return `${days} days ago`
+  if (days > 1 && days < 7) return `${days} days ago`
   return d.toLocaleDateString()
 }
 
