@@ -13,7 +13,7 @@ const mockJobs = [
     progress: 100,
     stage: 4,
     createdBy: 'Mudasir Hussain',
-    createdAt: '2026-07-22T10:30:00Z',
+    createdAt: '2026-08-11T10:30:00Z',
     completedAt: null,
     duration: null,
     log: [
@@ -52,8 +52,8 @@ const mockJobs = [
     progress: 65,
     stage: 3,
     createdBy: 'Ghulam Murtaza',
-    createdAt: '2026-07-21T14:55:00Z',
-    completedAt: '2026-07-21T15:00:01Z',
+    createdAt: '2026-08-11T14:55:00Z',
+    completedAt: '2026-08-11T15:00:01Z',
     duration: '5m 1s',
     log: [
       { timestamp: '14:55:00', level: 'info', text: 'Job queued' },
@@ -82,8 +82,8 @@ const mockJobs = [
     progress: 100,
     stage: 4,
     createdBy: 'Shayan',
-    createdAt: '2026-07-20T10:00:00Z',
-    completedAt: '2026-07-20T10:57:00Z',
+    createdAt: '2026-08-11T10:00:00Z',
+    completedAt: '2026-08-11T10:57:00Z',
     duration: '57m',
     log: [
       { timestamp: '10:00:00', level: 'info', text: 'Job queued' },
