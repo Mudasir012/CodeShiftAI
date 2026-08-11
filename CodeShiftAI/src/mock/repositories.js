@@ -8,7 +8,7 @@ export const repositories = [
     description: 'Legacy Python 2.7 e-commerce backend needing migration to Python 3.12',
     language: 'Python',
     sourceVersion: '2.7',
-    lastMigration: '2026-07-20T14:30:00Z',
+    lastMigration: '2026-08-11T14:30:00Z',
     status: 'connected',
   },
   {
@@ -32,7 +32,7 @@ export const repositories = [
     description: 'Legacy COBOL batch-processing module for financial transactions',
     language: 'COBOL',
     sourceVersion: 'COBOL-85',
-    lastMigration: '2026-07-18T09:15:00Z',
+    lastMigration: '2026-08-11T09:15:00Z',
     status: 'connected',
   },
   {
