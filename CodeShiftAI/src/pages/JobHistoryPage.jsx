@@ -47,6 +47,21 @@ export default function JobHistoryPage() {
         j.id.toLowerCase().includes(q)
       )
     }
+    if (filters.dateRange && filters.dateRange !== 'all') {
+      const now = new Date()
+      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      result = result.filter(j => {
+        if (!j.createdAt) return false
+        const jobDate = new Date(j.createdAt)
+        const startOfJobDate = new Date(jobDate.getFullYear(), jobDate.getMonth(), jobDate.getDate())
+        const diffDays = Math.round((startOfToday - startOfJobDate) / (1000 * 60 * 60 * 24))
+        if (filters.dateRange === 'today') return diffDays === 0
+        if (filters.dateRange === 'yesterday') return diffDays === 1
+        if (filters.dateRange === 'week') return diffDays <= 7
+        if (filters.dateRange === 'month') return diffDays <= 30
+        return true
+      })
+    }
     setFilteredJobs(result)
   }, [filters, jobs])
 
@@ -61,6 +76,41 @@ export default function JobHistoryPage() {
         title="Job History"
         description="View and manage all past migration jobs"
       />
+
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        <span className="text-xs text-gray-500 font-medium mr-1">Quick Filters:</span>
+        <button
+          onClick={() => setFilters({ status: 'all', search: '', dateRange: 'all' })}
+          className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+            filters.dateRange === 'all' && filters.status === 'all'
+              ? 'bg-violet-100 text-violet-700 border border-violet-200'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'
+          }`}
+        >
+          All Jobs
+        </button>
+        <button
+          onClick={() => setFilters(prev => ({ ...prev, dateRange: 'yesterday' }))}
+          className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors flex items-center gap-1 ${
+            filters.dateRange === 'yesterday'
+              ? 'bg-violet-600 text-white shadow-sm'
+              : 'bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200'
+          }`}
+        >
+          <CalendarDays className="w-3 h-3" />
+          Yesterday's Activity
+        </button>
+        <button
+          onClick={() => setFilters(prev => ({ ...prev, status: 'awaiting-review' }))}
+          className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${
+            filters.status === 'awaiting-review'
+              ? 'bg-amber-500 text-white shadow-sm'
+              : 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200'
+          }`}
+        >
+          Awaiting Review
+        </button>
+      </div>
 
       <FilterBar filters={filters} onChange={setFilters} />
 
