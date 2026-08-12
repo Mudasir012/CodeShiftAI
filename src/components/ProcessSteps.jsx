@@ -30,32 +30,32 @@ const STEPS = [
 
 const STEP_LOGS = {
   '01': [
-    { delay: 200, text: '$ codeshift analyze --recursive --report ./legacy' },
-    { delay: 800, text: '|-- scanning 238K lines across 47 files...' },
-    { delay: 1400, text: '|-- building dependency graph... 2,831 edges mapped' },
-    { delay: 2000, text: '|-- complexity score: 3.2 / 5.0 (moderate)' },
-    { delay: 2600, text: '>> ANALYZE COMPLETE — 0 errors, 100% coverage' },
+    { delay: 100, text: '$ codeshift analyze --recursive --report ./legacy' },
+    { delay: 400, text: '|-- scanning 238K lines across 47 files...' },
+    { delay: 700, text: '|-- building dependency graph... 2,831 edges mapped' },
+    { delay: 1000, text: '|-- complexity score: 3.2 / 5.0 (moderate)' },
+    { delay: 1300, text: '>> ANALYZE COMPLETE — 0 errors, 100% coverage' },
   ],
   '02': [
-    { delay: 200, text: '$ codeshift translate --parallel --llms=4 ./source ./target' },
-    { delay: 800, text: '|-- LLM-1: COBOL -> Rust  |  LLM-2: Fortran -> Go' },
-    { delay: 1400, text: '|-- LLM-3: VB6  -> Python |  LLM-4: PHP -> TypeScript' },
-    { delay: 2000, text: '|-- cross-validating output across all 4 LLMs...' },
-    { delay: 2600, text: '>> TRANSLATE COMPLETE — parity score: 99.8%' },
+    { delay: 100, text: '$ codeshift translate --parallel --llms=4 ./source ./target' },
+    { delay: 400, text: '|-- LLM-1: COBOL -> Rust  |  LLM-2: Fortran -> Go' },
+    { delay: 700, text: '|-- LLM-3: VB6  -> Python |  LLM-4: PHP -> TypeScript' },
+    { delay: 1000, text: '|-- cross-validating output across all 4 LLMs...' },
+    { delay: 1300, text: '>> TRANSLATE COMPLETE — parity score: 99.8%' },
   ],
   '03': [
-    { delay: 200, text: '$ codeshift verify --compile --lint --test ./output' },
-    { delay: 800, text: '|-- compiling 156K lines across 34 modules...' },
-    { delay: 1400, text: '|-- running 4,721 integration & regression tests...' },
-    { delay: 2000, text: '|-- linting against 1,203 rules...' },
-    { delay: 2600, text: '>> VERIFY COMPLETE — 0 failures, 0 warnings, 100% pass' },
+    { delay: 100, text: '$ codeshift verify --compile --lint --test ./output' },
+    { delay: 400, text: '|-- compiling 156K lines across 34 modules...' },
+    { delay: 700, text: '|-- running 4,721 integration & regression tests...' },
+    { delay: 1000, text: '|-- linting against 1,203 rules...' },
+    { delay: 1300, text: '>> VERIFY COMPLETE — 0 failures, 0 warnings, 100% pass' },
   ],
   '04': [
-    { delay: 200, text: '$ codeshift deploy --contract-identical --swap ./production' },
-    { delay: 800, text: '|-- verifying API contract parity (2,147 endpoints)...' },
-    { delay: 1400, text: '|-- swapping legacy binaries for modern equivalents...' },
-    { delay: 2000, text: '|-- running smoke tests against live traffic...' },
-    { delay: 2600, text: '>> DEPLOY COMPLETE — downtime: 0 min, rollbacks: 0' },
+    { delay: 100, text: '$ codeshift deploy --contract-identical --swap ./production' },
+    { delay: 400, text: '|-- verifying API contract parity (2,147 endpoints)...' },
+    { delay: 700, text: '|-- swapping legacy binaries for modern equivalents...' },
+    { delay: 1000, text: '|-- running smoke tests against live traffic...' },
+    { delay: 1300, text: '>> DEPLOY COMPLETE — downtime: 0 min, rollbacks: 0' },
   ],
 };
 
@@ -91,12 +91,12 @@ export default function ProcessSteps() {
 
     const revealTimer = setTimeout(() => {
       setRevealedCards(prev => new Set(prev).add(STEPS[activeIndex].num));
-    }, 300);
+    }, 150);
 
     const nextTimer = setTimeout(() => {
       setVisibleLogs(new Set());
       setActiveIndex(prev => prev + 1);
-    }, 3200);
+    }, 1700);
 
     return () => {
       clearTimeout(revealTimer);
@@ -176,7 +176,7 @@ export default function ProcessSteps() {
           {activeIndex >= 0 && activeIndex < STEPS.length && STEP_LOGS[STEPS[activeIndex].num]?.map((line, i) => (
             <div
               key={i}
-              className={`transition-opacity duration-300 py-0.5 ${visibleLogs.has(STEPS[activeIndex].num) || i === 0 ? 'opacity-100' : 'opacity-0'}`}
+              className={`transition-opacity duration-100 py-0.5 ${visibleLogs.has(STEPS[activeIndex].num) || i === 0 ? 'opacity-100' : 'opacity-0'}`}
             >
               <span className="text-paper/30 mr-2">[{String((i + 1) * 2).padStart(3, '0')}ms]</span>
               <span className={

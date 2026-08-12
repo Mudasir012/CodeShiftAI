@@ -36,14 +36,14 @@ export default function Home() {
       <section className="border-b-3 border-ink relative overflow-hidden bg-paper">
         {/* Particle background — sits behind content */}
         <ParticleBackground />
-        <div className="max-w-7xl mx-auto px-6 pt-10 pb-16 relative z-10">
-          <div className="mb-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 pt-12 pb-20 relative z-10">
+          <div className="mb-5 overflow-hidden">
             <AsciiArt className="w-full" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Left Hero Content */}
-            <div className="lg:col-span-7 flex flex-col gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch">
+            {/* Bento cell: headline + description */}
+            <div className="lg:col-span-8 border-3 border-ink bg-white p-6 sm:p-8 shadow-[6px_6px_0_0_#0A0A0A] relative group flex flex-col gap-6">
               <div className="inline-flex items-center gap-2 font-mono font-bold text-xs text-paper bg-ink px-3 py-1 border-2 border-ink self-start shadow-[3px_3px_0_0_#FF2D00]">
                 <span className="w-2 h-2 rounded-full bg-signal animate-ping" />
                 <span># AI-POWERED LEGACY MODERNIZATION</span>
@@ -51,7 +51,7 @@ export default function Home() {
 
               <h1 className="text-[clamp(2.2rem,4.5vw,4.2rem)] font-bold -tracking-[0.05em] leading-[0.92] uppercase">
                 <Typewriter text="YOUR LEGACY CODEBASE ISN'T A LIABILITY." delay={35} />
-                <span className="text-signal block mt-2">
+                <span className="text-signal block mt-3">
                   <Typewriter text="IT'S INPUT." delay={55} />
                 </span>
               </h1>
@@ -60,28 +60,11 @@ export default function Home() {
                 CodeShiftAI translates aging codebases — COBOL, Fortran, VB6, PHP 4 —
                 into modern Rust, Go, Python, and TypeScript. Guided by autonomous multi-agent pipeline and our Mascot <strong className="text-ink underline decoration-signal">ShiftBot</strong>. No rewrites. No downtime.
               </p>
-
-              <div className="flex gap-4 flex-wrap max-sm:flex-col pt-2">
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 font-display font-bold text-xs uppercase tracking-[0.06em] px-6 py-4 border-3 border-ink bg-ink text-paper transition-all duration-150 hover:bg-signal hover:border-signal hover:text-white hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#0A0A0A] max-sm:w-full max-sm:justify-center"
-                >
-                  <ScrambleText text="START FREE ASSESSMENT" />
-                  <span>→</span>
-                </Link>
-                <a
-                  href="#mascot-intro"
-                  className="inline-flex items-center gap-2 font-display font-bold text-xs uppercase tracking-[0.06em] px-6 py-4 border-3 border-ink bg-white transition-all duration-150 hover:bg-ink hover:text-paper hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#0A0A0A] max-sm:w-full max-sm:justify-center"
-                >
-                  <ScrambleText text="MEET SHIFTBOT AI" />
-                  <span>↓</span>
-                </a>
-              </div>
             </div>
 
-            {/* Right Hero Visual (Interactive Mascot + Code Tree) */}
-            <div className="lg:col-span-5 flex flex-col items-center">
-              <div className="w-full border-3 border-ink bg-white p-6 shadow-[8px_8px_0_0_#0A0A0A] relative group">
+            {/* Bento cell: interactive mascot + code tree (tall, spans both rows) */}
+            <div className="lg:col-span-4 lg:row-span-2 flex">
+              <div className="w-full border-3 border-ink bg-white p-5 shadow-[6px_6px_0_0_#0A0A0A] relative group flex flex-col">
                 <div className="flex items-center justify-between border-b-3 border-ink pb-3 mb-4 font-mono text-xs">
                   <span className="font-bold uppercase text-ink flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 bg-signal" />
@@ -103,6 +86,41 @@ export default function Home() {
                 </div>
 
                 <CodeTree />
+              </div>
+            </div>
+
+            {/* Bento cell: CTA + quick stats */}
+            <div className="lg:col-span-8 border-3 border-ink bg-white p-5 sm:p-6 shadow-[6px_6px_0_0_#0A0A0A] flex flex-wrap items-center gap-x-6 gap-y-4">
+              <div className="flex gap-3 flex-wrap max-sm:flex-col">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 font-display font-bold text-xs uppercase tracking-[0.06em] px-5 py-3.5 border-3 border-ink bg-ink text-paper transition-all duration-150 hover:bg-signal hover:border-signal hover:text-white hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#0A0A0A] max-sm:w-full max-sm:justify-center"
+                >
+                  <ScrambleText text="START FREE ASSESSMENT" />
+                  <span>→</span>
+                </Link>
+                <a
+                  href="#mascot-intro"
+                  className="inline-flex items-center gap-2 font-display font-bold text-xs uppercase tracking-[0.06em] px-5 py-3.5 border-3 border-ink bg-white transition-all duration-150 hover:bg-ink hover:text-paper hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#0A0A0A] max-sm:w-full max-sm:justify-center"
+                >
+                  <ScrambleText text="MEET SHIFTBOT AI" />
+                  <span>↓</span>
+                </a>
+              </div>
+
+              <div className="ml-auto flex items-center gap-4 font-mono text-[11px] text-concrete max-sm:w-full max-sm:justify-start">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-signal" />
+                  14M+ LINES
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-hyper" />
+                  0 DOWNTIME
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-ink" />
+                  100% PASS
+                </span>
               </div>
             </div>
           </div>
