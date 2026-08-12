@@ -57,19 +57,21 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { icon: HardDrive, label: 'Repositories', value: connectedCount },
-          { icon: GitFork, label: 'Providers', value: providerCount },
-          { icon: Activity, label: 'Migrated', value: migratedCount },
-          { icon: Activity, label: 'Last Activity', value: lastActive ? formatDate(lastActive) : 'N/A' },
+          { icon: HardDrive, label: 'Repositories', value: connectedCount, color: 'text-violet-600', bg: 'bg-violet-50' },
+          { icon: GitFork, label: 'Providers', value: providerCount, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { icon: Activity, label: 'Migrated', value: migratedCount, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+          { icon: Activity, label: 'Last Activity', value: lastActive ? formatDate(lastActive) : 'N/A', color: 'text-amber-600', bg: 'bg-amber-50' },
         ].map((stat) => {
           const Icon = stat.icon
           return (
-            <div key={stat.label} className="bg-white border border-gray-200 rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-1">
-                <Icon className="w-4 h-4 text-gray-400" />
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{stat.label}</span>
+            <div key={stat.label} className="bg-white border border-gray-200/80 rounded-xl p-4.5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className={`p-2 rounded-lg ${stat.bg} ${stat.color} flex-shrink-0`}>
+                  <Icon className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{stat.label}</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+              <div className="text-2xl font-extrabold text-gray-900 tracking-tight pl-0.5">{stat.value}</div>
             </div>
           )
         })}
