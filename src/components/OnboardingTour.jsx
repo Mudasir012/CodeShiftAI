@@ -57,18 +57,28 @@ export default function OnboardingTour() {
   useEffect(() => {
     if (step < 0) return;
     const current = STEPS[step];
-    if (current?.targetId) {
-      const el = document.getElementById(current.targetId);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        setTargetRect(rect);
-        el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      } else {
+
+    const measure = () => {
+      if (!current?.targetId) {
         setTargetRect(null);
+        return;
       }
-    } else {
-      setTargetRect(null);
-    }
+      const el = document.getElementById(current.targetId);
+      setTargetRect(el ? el.getBoundingClientRect() : null);
+    };
+
+    const el = current?.targetId ? document.getElementById(current.targetId) : null;
+    if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+
+    const settle = setTimeout(measure, el ? 450 : 0);
+    window.addEventListener('resize', measure);
+    window.addEventListener('scroll', measure, { passive: true });
+
+    return () => {
+      clearTimeout(settle);
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('scroll', measure);
+    };
   }, [step]);
 
   const next = () => {
@@ -88,6 +98,7 @@ export default function OnboardingTour() {
 
   const current = STEPS[step];
   const isCenter = current.position === 'center';
+  const showCentered = isCenter || !targetRect;
 
   return (
     <>
@@ -113,48 +124,48 @@ export default function OnboardingTour() {
 
       {/* Tooltip box */}
       <div
-        className={`fixed z-[92] w-80 border-3 border-ink bg-white shadow-[6px_6px_0_0_#FF2D00] p-5 animate-fade-slide-in ${
-          isCenter ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' : ''
-        }`}
+        className={`fixed z-[92] w-80 ${showCentered ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}
         style={
-          !isCenter && targetRect
+          !showCentered && targetRect
             ? {
                 left: Math.min(Math.max(targetRect.left, 12), window.innerWidth - 332),
                 top: current.position === 'bottom'
                   ? targetRect.bottom + 16
-                  : targetRect.top - 180,
+                  : Math.max(targetRect.top - 180, 12),
               }
             : {}
         }
       >
-        {/* Progress dots */}
-        <div className="flex gap-1 mb-3">
-          {STEPS.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === step ? 'w-4 bg-signal' : i < step ? 'w-1.5 bg-ink/30' : 'w-1.5 bg-ink/10'
-              }`}
-            />
-          ))}
-        </div>
+        <div className="border-3 border-ink bg-white shadow-[6px_6px_0_0_#FF2D00] p-5 animate-fade-slide-in">
+          {/* Progress dots */}
+          <div className="flex gap-1 mb-3">
+            {STEPS.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === step ? 'w-4 bg-signal' : i < step ? 'w-1.5 bg-ink/30' : 'w-1.5 bg-ink/10'
+                }`}
+              />
+            ))}
+          </div>
 
-        <h3 className="font-display font-bold text-ink text-base mb-2">{current.title}</h3>
-        <p className="font-mono text-xs text-concrete leading-relaxed mb-4">{current.body}</p>
+          <h3 className="font-display font-bold text-ink text-base mb-2">{current.title}</h3>
+          <p className="font-mono text-xs text-concrete leading-relaxed mb-4">{current.body}</p>
 
-        <div className="flex items-center justify-between">
-          <button
-            onClick={finish}
-            className="font-mono text-[10px] text-concrete hover:text-signal uppercase"
-          >
-            Skip tour
-          </button>
-          <button
-            onClick={next}
-            className="px-4 py-2 border-2 border-ink bg-ink text-paper font-mono text-xs font-bold uppercase hover:bg-signal hover:border-signal transition-colors"
-          >
-            {current.final ? 'Get Started →' : 'Next →'}
-          </button>
+          <div className="flex items-center justify-between">
+            <button
+              onClick={finish}
+              className="font-mono text-[10px] text-concrete hover:text-signal uppercase"
+            >
+              Skip tour
+            </button>
+            <button
+              onClick={next}
+              className="px-4 py-2 border-2 border-ink bg-ink text-paper font-mono text-xs font-bold uppercase hover:bg-signal hover:border-signal transition-colors"
+            >
+              {current.final ? 'Get Started →' : 'Next →'}
+            </button>
+          </div>
         </div>
       </div>
     </>

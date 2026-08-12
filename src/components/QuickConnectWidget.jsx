@@ -105,6 +105,7 @@ export default function QuickConnectWidget() {
 
         {/* FAB button */}
         <button
+          id="quick-connect-btn"
           onClick={() => setOpen((o) => !o)}
           title="Quick connect a repository"
           className={`flex items-center gap-2 px-4 py-3 border-3 border-ink font-mono text-xs font-bold uppercase shadow-[3px_3px_0_0_#0A0A0A] transition-all active:shadow-none active:translate-x-0.5 active:translate-y-0.5 ${
