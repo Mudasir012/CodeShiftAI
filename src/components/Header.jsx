@@ -10,6 +10,7 @@ const PUBLIC_NAV = [
 
 const PLATFORM_NAV = [
   { path: '/dashboard', label: 'Dashboard' },
+  { path: '/orchestrate', label: 'Live Agents' },
   { path: '/jobs', label: 'Jobs' },
   { path: '/new-job', label: 'New Pipeline' },
   { path: '/audit-log', label: 'Audit Logs' },
@@ -18,7 +19,7 @@ const PLATFORM_NAV = [
 
 export default function Header() {
   const { pathname } = useLocation();
-  const isPlatformRoute = ['/dashboard', '/jobs', '/new-job', '/audit-log', '/settings'].some((p) => pathname.startsWith(p));
+  const isPlatformRoute = ['/dashboard', '/jobs', '/new-job', '/audit-log', '/settings', '/orchestrate'].some((p) => pathname.startsWith(p));
   const navItems = isPlatformRoute ? PLATFORM_NAV : PUBLIC_NAV;
 
   return (

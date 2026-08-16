@@ -16,6 +16,7 @@ import JobsPage from './pages/JobsPage';
 import NewJobPage from './pages/NewJobPage';
 import AuditLogPage from './pages/AuditLogPage';
 import SettingsPage from './pages/SettingsPage';
+import LiveOrchestrationPage from './pages/LiveOrchestrationPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -25,7 +26,7 @@ function ScrollToTop() {
 
 function PlatformWidgets() {
   const { pathname } = useLocation();
-  const isPlatform = ['/dashboard', '/jobs', '/new-job', '/audit-log', '/settings'].includes(pathname);
+  const isPlatform = ['/dashboard', '/jobs', '/new-job', '/audit-log', '/settings', '/orchestrate'].includes(pathname);
   if (!isPlatform) return null;
   return (
     <>
@@ -55,6 +56,7 @@ export default function App() {
             <Route path="/new-job"   element={<NewJobPage />} />
             <Route path="/audit-log" element={<AuditLogPage />} />
             <Route path="/settings"  element={<SettingsPage />} />
+            <Route path="/orchestrate" element={<LiveOrchestrationPage />} />
           </Routes>
         </main>
         <Footer />
